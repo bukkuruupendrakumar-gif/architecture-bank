@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Book Design</h2>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<label>Select Date</label>
+
+<input type="date" name="date" class="form-control">
+
+<label>Select Slot</label>
+
+<select name="slot" class="form-control">
+
+<option>10AM - 11AM</option>
+<option>11AM - 12PM</option>
+<option>2PM - 3PM</option>
+
+</select>
+
+<br>
+
+<button class="btn btn-success">Confirm Booking</button>
+
+</form>
+
+{% endblock %}

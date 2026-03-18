@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="text-center mb-4">{{category.name}} Designs</h2>
+
+<div class="row">
+
+{% for d in designs %}
+
+<div class="col-md-4 mb-4" data-aos="fade-up">
+
+<div class="card">
+
+<img src="{{d.image.url}}" class="card-img-top">
+
+<div class="card-body">
+
+<h5>{{d.name}}</h5>
+
+<p>{{d.description}}</p>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

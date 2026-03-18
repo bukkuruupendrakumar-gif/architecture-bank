@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Login</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<style>
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#141e30,#243b55);
+font-family:Arial;
+}
+
+.login-box{
+
+background:white;
+padding:40px;
+border-radius:10px;
+width:350px;
+
+}
+
+input{
+
+width:100%;
+padding:10px;
+margin:10px 0;
+
+}
+
+button{
+
+width:100%;
+padding:10px;
+background:#243b55;
+color:white;
+border:none;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login-box animate__animated animate__zoomIn">
+
+<h2>Architecture Design Bank</h2>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<input type="text" name="username" placeholder="Username">
+
+<input type="password" name="password" placeholder="Password">
+
+<button type="submit">Login</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Architecture Designs</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+<style>
+
+body{
+
+background:#f4f6f9;
+
+}
+
+.navbar{
+
+background:#111;
+
+}
+
+.hero{
+
+height:350px;
+
+background:url("https://images.unsplash.com/photo-1503387762-592deb58ef4e");
+
+background-size:cover;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+color:white;
+
+font-size:45px;
+
+font-weight:bold;
+
+}
+
+.card{
+
+transition:0.4s;
+
+}
+
+.card:hover{
+
+transform:scale(1.05);
+
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark">
+
+<div class="container">
+
+<a class="navbar-brand">Architecture Design Bank</a>
+
+<a href="/logout" class="btn btn-danger">Logout</a>
+
+</div>
+
+</nav>
+
+<div class="hero">
+
+Beautiful Home Designs
+
+</div>
+
+<div class="container mt-5">
+
+<h2 class="mb-4 text-center">Interior Designs</h2>
+
+<div class="row">
+
+{% for d in designs %}
+
+<div class="col-md-4 mb-4" data-aos="fade-up">
+
+<div class="card">
+
+<img src="{{ d.image.url }}" class="card-img-top">
+
+<div class="card-body">
+
+<h5>{{ d.name }}</h5>
+
+<p>{{ d.description }}</p>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+<script>
+
+AOS.init();
+
+</script>
+
+</body>
+
+</html>

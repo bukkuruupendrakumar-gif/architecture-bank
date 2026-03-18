@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 style="text-align:center;margin-top:40px;">Design Gallery</h2>
+
+<div class="gallery">
+
+{% for d in designs %}
+
+<div class="card">
+    <img src="{{d.image.url}}">
+    <h3>{{d.name}}</h3>
+    <p>{{d.description}}</p>
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
+{% for d in designs %}
+    <div>
+        <img src="{{ d.image.url }}">
+        <h3>{{ d.title }}</h3>
+
+        <!-- LIKE BUTTON -->
+        <a href="/like/{{ d.id }}">❤️ Like</a>
+    </div>
+{% endfor %}

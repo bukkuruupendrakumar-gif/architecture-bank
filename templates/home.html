@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="hero">
+
+    <h1 class="title">Architecture Design Bank</h1>
+    <p class="subtitle">Modern House Designs & Interior Ideas</p>
+
+    <!-- SEARCH BAR -->
+    <form method="GET" action="/">
+        <input type="text" name="q" placeholder="Search designs..." class="search-box">
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+
+</div>
+
+<div class="category-section">
+
+    <h2>Explore Categories</h2>
+
+    <div class="category-container">
+
+        {% for category in categories %}
+
+        <a href="/designs/{{category.id}}/" class="category-btn">
+            {{category.name}}
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

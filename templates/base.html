@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Architecture Design Bank</title>
+
+    {% load static %}
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>Architecture Bank</h2>
+
+    <div>
+        <a href="/">Home</a>
+        <a href="/admin/">Admin</a>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+{% block content %}
+{% endblock %}
+
+<!-- JS FILE (VERY IMPORTANT - ADDED) -->
+<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>
