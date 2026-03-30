@@ -2,30 +2,52 @@
 
 {% block content %}
 
-<h2>Book Design</h2>
+<div class="container mt-5">
 
-<form method="POST">
+    <h2 class="text-center mb-4">📅 Book Design</h2>
 
-{% csrf_token %}
+    <div class="card p-4 shadow">
 
-<label>Select Date</label>
+        <!-- ✅ IMPORTANT: use design.id (NOT item.id) -->
+        <form method="POST" action="/save-booking/{{design.id}}/">
+            {% csrf_token %}
 
-<input type="date" name="date" class="form-control">
+            <!-- 👤 CUSTOMER DETAILS -->
+            <label>Name</label>
+            <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
 
-<label>Select Slot</label>
+            <label class="mt-2">Phone</label>
+            <input type="text" name="phone" class="form-control" placeholder="Enter phone number" required>
 
-<select name="slot" class="form-control">
+            <label class="mt-2">Address</label>
+            <textarea name="address" class="form-control" placeholder="Enter address" required></textarea>
 
-<option>10AM - 11AM</option>
-<option>11AM - 12PM</option>
-<option>2PM - 3PM</option>
+            <!-- 📅 EXTRA (your old fields) -->
+            <label class="mt-3">Select Date</label>
+            <input type="date" name="date" class="form-control">
 
-</select>
+            <label class="mt-2">Select Slot</label>
+            <select name="slot" class="form-control">
+                <option>10AM - 11AM</option>
+                <option>11AM - 12PM</option>
+                <option>2PM - 3PM</option>
+            </select>
 
-<br>
+            <br>
 
-<button class="btn btn-success">Confirm Booking</button>
+            <button class="btn btn-success w-100">
+                💳 Proceed to Payment
+            </button>
 
-</form>
+        </form>
+
+    </div>
+
+    <!-- 🔙 BACK -->
+    <div class="text-center mt-3">
+        <a href="/dashboard/" class="btn btn-secondary">⬅ Back</a>
+    </div>
+
+</div>
 
 {% endblock %}

@@ -6,6 +6,34 @@
 
 <p>Pay using UPI / Card</p>
 
-<button class="btn btn-success">Pay Now</button>
+<button id="pay-btn" class="btn btn-success">Pay Now</button>
+
+<!-- Razorpay Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+var options = {
+    "key": "{{ razorpay_key }}",   // from backend
+    "amount": "{{ order.amount }}",
+    "currency": "INR",
+    "order_id": "{{ order.id }}",
+
+    "handler": function (response){
+        // redirect after success
+        window.location.href = "/success/?booking_id={{ booking.id }}";
+    },
+
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+
+var rzp = new Razorpay(options);
+
+document.getElementById('pay-btn').onclick = function(e){
+    rzp.open();
+    e.preventDefault();
+}
+</script>
 
 {% endblock %}
