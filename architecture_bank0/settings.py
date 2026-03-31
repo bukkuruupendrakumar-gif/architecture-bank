@@ -16,9 +16,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ================================
 SECRET_KEY = 'django-insecure-1*oo9)gnv(aof3whms$owr!v!f=336hxc-1$8yn%ttdqn-5=ia'
 
-DEBUG = True  # ⚠️ Change to False in production
+DEBUG = False  # ✅ IMPORTANT (Render needs this)
 
-ALLOWED_HOSTS = ['*']  # ✅ Needed for Render
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 
 # ================================
@@ -41,9 +41,16 @@ INSTALLED_APPS = [
 # ================================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # ✅ WhiteNoise (VERY IMPORTANT)
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+
+    # ✅ Fix for Render CSRF
     'django.middleware.csrf.CsrfViewMiddleware',
+
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -119,22 +126,22 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
 USE_TZ = True
 
 
 # ================================
-# 📁 STATIC FILES
+# 📁 STATIC FILES (IMPORTANT)
 # ================================
 STATIC_URL = '/static/'
 
-# For development
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-# For production (Render)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# ✅ WhiteNoise Storage
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # ================================
@@ -151,8 +158,13 @@ LOGIN_URL = '/login/'
 
 
 # ================================
+# 🌐 RENDER FIXES
+# ================================
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+
+
+# ================================
 # 💳 RAZORPAY (OPTIONAL)
 # ================================
-
 # RAZORPAY_KEY = "rzp_test_xxxxx"
 # RAZORPAY_SECRET = "your_secret_here"

@@ -49,6 +49,11 @@
             color:#243b55;
             font-weight:bold;
         }
+
+        .error{
+            color:red;
+            margin-top:10px;
+        }
     </style>
 
 </head>
@@ -68,6 +73,11 @@
 
         <button type="submit">Signup</button>
     </form>
+
+    <!-- ✅ ERROR MESSAGE DISPLAY -->
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
 
     <!-- Login Link -->
     <a href="/login/">Already have an account? Login</a>

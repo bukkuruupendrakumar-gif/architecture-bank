@@ -5,11 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.conf import settings
 
+
 from .models import Category, Design, Wishlist, Booking
 
 
 # =============================
-# 🏠 HOME + SEARCH 
+# 🏠 HOME + SEARCH
 # =============================
 def home(request):
     query = request.GET.get('q')
@@ -27,35 +28,66 @@ def home(request):
 
 
 # =============================
-# 🔐 LOGIN
+# 🔐 LOGIN (FIXED ✅)
 # =============================
 def login_view(request):
     if request.method == 'POST':
-        user = authenticate(
-            request,
-            username=request.POST['username'],
-            password=request.POST['password']
-        )
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-        if user:
+        # ✅ Validate fields
+        if not username or not password:
+            return render(request, 'login.html', {
+                "error": "All fields are required"
+            })
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
             login(request, user)
-            return redirect('dashboard')
+
+            # ✅ Redirect to next page if exists
+            next_url = request.GET.get('next')
+            return redirect(next_url if next_url else 'dashboard')
+
+        else:
+            return render(request, 'login.html', {
+                "error": "Invalid username or password"
+            })
 
     return render(request, 'login.html')
 
 
 # =============================
-# 📝 SIGNUP
+# 📝 SIGNUP (FIXED ✅ NO CRASH)
 # =============================
 def signup_view(request):
-    if request.method == 'POST':
-        User.objects.create_user(
-            username=request.POST['username'],
-            password=request.POST['password']
-        )
-        return redirect('login')
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-    return render(request, 'signup.html')
+        # ✅ Empty validation
+        if not username or not password:
+            return render(request, "signup.html", {
+                "error": "All fields are required"
+            })
+
+        # ✅ Prevent duplicate crash
+        if User.objects.filter(username=username).exists():
+            return render(request, "signup.html", {
+                "error": "Username already exists"
+            })
+
+        # ✅ Create user safely
+        user = User.objects.create_user(
+            username=username,
+            password=password
+        )
+        user.save()
+
+        return redirect("login")
+
+    return render(request, "signup.html")
 
 
 # =============================
@@ -141,7 +173,7 @@ def wishlist_page(request):
 
 
 # =============================
-# 📅 BOOK DESIGN (AJAX QUICK)
+# 📅 BOOK DESIGN (AJAX)
 # =============================
 @login_required
 def book_design(request, id):
@@ -164,7 +196,7 @@ def book_design(request, id):
 
 
 # =============================
-# 📅 BOOKING FORM PAGE
+# 📅 BOOKING PAGE
 # =============================
 @login_required
 def booking_page(request, id):
@@ -176,7 +208,7 @@ def booking_page(request, id):
 
 
 # =============================
-# 📅 SAVE BOOKING (FIXED ✅)
+# 📅 SAVE BOOKING
 # =============================
 @login_required
 def save_booking(request, id):
@@ -195,7 +227,6 @@ def save_booking(request, id):
         )
 
         if not created:
-            # 👉 already exists → update details
             booking.name = request.POST.get('name', booking.name)
             booking.phone = request.POST.get('phone', booking.phone)
             booking.address = request.POST.get('address', booking.address)
@@ -205,13 +236,13 @@ def save_booking(request, id):
 
 
 # =============================
-# 💳 PAYMENT (RAZORPAY SAFE)
+# 💳 PAYMENT
 # =============================
 @login_required
 def payment(request, id):
     booking = get_object_or_404(Booking, id=id)
 
-    # 👉 SAFE MODE (no Razorpay configured)
+    # ✅ SAFE MODE (no Razorpay)
     if not hasattr(settings, "RAZORPAY_KEY"):
         booking.status = "Paid"
         booking.save()
@@ -224,10 +255,8 @@ def payment(request, id):
             auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET)
         )
 
-        amount = 50000  # ₹500
-
         order = client.order.create({
-            "amount": amount,
+            "amount": 50000,
             "currency": "INR",
             "payment_capture": "1"
         })
